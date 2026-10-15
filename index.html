@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pra você 💗</title>
+<style>
+:root{--t:#5a1a3a;--hint:#9b5a78;--g1:#ffe3ec;--g2:#fff6f0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--t:#ffd9e6;--hint:#d89ab5;--g1:#3a1228;--g2:#24101c}}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Quicksand',system-ui,sans-serif;color:var(--t);background:linear-gradient(160deg,var(--g1),var(--g2));transition:background 1.2s;-webkit-tap-highlight-color:transparent;user-select:none}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;cursor:pointer}
+#txt{max-width:22rem;opacity:0;transform:translateY(12px) scale(.97);transition:opacity .9s,transform .9s}
+#txt.on{opacity:1;transform:none}
+#small{font-size:1.15rem;line-height:1.5;margin-bottom:.6rem;opacity:.85}
+#big{font-family:'Brush Script MT','Segoe Script',cursive;font-size:2.6rem;line-height:1.2}
+#hint{position:fixed;bottom:calc(1.5rem + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font-size:.85rem;color:var(--hint);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.f{position:fixed;bottom:-3rem;white-space:nowrap;pointer-events:none;animation:up linear forwards;font-weight:700}
+@keyframes up{to{transform:translateY(-115vh) rotate(var(--r));opacity:0}}
+.h{position:fixed;bottom:-2rem;pointer-events:none;animation:up linear forwards}
+</style>
+</head>
+<body>
+<div id="stage"><div id="txt"><p id="small"></p><p id="big"></p></div></div>
+<div id="hint">toque na tela 🤍</div>
+<script>
+const NOME="Marjorie";
+const S=[
+["oi, "+NOME+"…","tenho umas coisinhas pra te dizer"],
+["começa assim:","eu gosto tanto de você"],
+["eu gosto do seu sorriso","daquele que deixa o meu dia inteiro melhor"],
+["gosto da sua risada","e de ser o motivo dela às vezes"],
+["gosto do seu jeito","das suas manias, do seu cuidado, de tudo"],
+["gosto de quando você me olha","e o mundo fica bem quietinho"],
+["e aí eu percebi…","que não era só gostar"],
+["eu te amo","💗"]
+];
+const bgs=[["#ffe3ec","#fff6f0"],["#ffd6e5","#ffeef5"],["#ffe9c9","#ffd6e0"],["#e7dcff","#ffdff0"],["#d9ecff","#ffe3f0"],["#ffd9d9","#ffe9f3"],["#ffc2d6","#ffe0ec"],["#ff9dbd","#ffd1e1"]];
+const dark=matchMedia('(prefers-color-scheme: dark)').matches;
+const t=document.getElementById('txt'),sm=document.getElementById('small'),bg=document.getElementById('big'),hint=document.getElementById('hint');
+let i=-1,busy=false,fin=false;
+function show(k){
+ busy=true;t.classList.remove('on');
+ setTimeout(()=>{
+  sm.textContent=S[k][0];bg.textContent=S[k][1];
+  if(!dark){document.documentElement.style.setProperty('--g1',bgs[k][0]);document.documentElement.style.setProperty('--g2',bgs[k][1]);}
+  const last=k===S.length-1;
+  sm.style.fontSize=last?'1.4rem':'';
+  bg.style.fontSize=last?'4rem':(k<2?'1.5rem':'');
+  bg.style.fontFamily=k<3?'inherit':'';
+  t.classList.add('on');busy=false;
+  if(last){hint.remove();setTimeout(finale,1800);}
+ },k===0?100:700);
+}
+function next(){if(busy||fin)return;i++;if(i<S.length)show(i);}
+document.getElementById('stage').addEventListener('click',next);
+next();
+const words=["eu te amo","te amo","eu te amo ♡","te amo demais","I love you","te quiero","je t'aime","ti amo","ich liebe dich","eu te amo muito","amo seu sorriso","amo você","amo tudo em você","te amo, viu?","meu amor","minha vida"];
+const fonts=["'Brush Script MT',cursive","Georgia,serif","'Trebuchet MS',sans-serif","'Courier New',monospace","'Segoe Script',cursive","system-ui,sans-serif"];
+const cols=["#e0457b","#ff6b9d","#b83280","#ff8fab","#9d4edd","#ff5d8f","#d6336c","#f06595"];
+const hs=["💗","💖","💕","💞","🤍","💘","✨","🌸"];
+function rnd(a,b){return a+Math.random()*(b-a)}
+function spawn(){
+ const d=document.createElement('div');
+ if(Math.random()<.3){d.className='h';d.textContent=hs[Math.floor(Math.random()*hs.length)];d.style.fontSize=rnd(1.2,2.6)+'rem';}
+ else{d.className='f';d.textContent=words[Math.floor(Math.random()*words.length)];
+  d.style.fontFamily=fonts[Math.floor(Math.random()*fonts.length)];
+  d.style.color=cols[Math.floor(Math.random()*cols.length)];
+  d.style.fontSize=rnd(1,2.4)+'rem';}
+ d.style.left=rnd(-5,80)+'vw';
+ d.style.setProperty('--r',rnd(-25,25)+'deg');
+ d.style.animationDuration=rnd(6,12)+'s';
+ document.body.appendChild(d);
+ setTimeout(()=>d.remove(),13000);
+}
+function finale(){
+ fin=true;
+ sm.textContent="eu te amo, "+NOME;
+ bg.textContent="de todas as formas 💗";
+ bg.style.fontSize='2.4rem';
+ for(let n=0;n<14;n++)setTimeout(spawn,n*120);
+ setInterval(spawn,350);
+}
+</script>
+</body>
+</html>
